@@ -16,7 +16,7 @@ const app = express();
 connectDB();
 
 // CORS Configuration
-const allowedOrigins = ["http://localhost:5173", "http://localhost:3000","http://localhost:5174"];
+const allowedOrigins = ["https://admin-penal-new.vercel.app", "http://localhost:3000","http://localhost:5174"];
 
 app.use(
   cors({
