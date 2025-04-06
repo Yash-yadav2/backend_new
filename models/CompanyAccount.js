@@ -19,7 +19,7 @@ const CompanyAccountSchema = new mongoose.Schema({
   },
   paymentType: { 
     type: String, 
-    enum: ["crypto", "bank", "vip", "super"], 
+    enum: ["crypto", "tum_bankalar", "bankpay", "othomatik","banka_havalesi","hizla_havalesi","vip_havalesi","fast_havele","papara"], 
     required: true 
   },
   accountHolderName: { 

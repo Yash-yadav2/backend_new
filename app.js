@@ -15,8 +15,9 @@ const app = express();
 // Connect to MongoDB
 connectDB();
 
+
 // CORS Configuration
-const allowedOrigins = ["http://localhost:5173", "http://localhost:3000","http://localhost:5174"];
+const allowedOrigins = ["https://casibom8870.com","https://oc0000ad.com", "https://xn--casiom820-jy5d.com" ,"https://pfoc0000ft.com"];
 
 app.use(
   cors({
@@ -40,13 +41,15 @@ app.options("*", cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.set("trust proxy", 1);
+
 // Session Configuration
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "default_secret",
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false, httpOnly: true }, // Adjust for HTTPS
+    cookie: {   secure: process.env.NODE_ENV === "production", httpOnly: true , sameSite: "lax",maxAge: 1000 * 60 * 60 * 24}, // Adjust for HTTPS
   })
 );
 
