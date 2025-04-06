@@ -17,7 +17,9 @@ connectDB();
 
 
 // CORS Configuration
+
 const allowedOrigins = ["https://casibom8870.com","https://oc0000ad.com", "https://xn--casiom820-jy5d.com" ,"https://pfoc0000ft.com"];
+
 
 app.use(
   cors({
