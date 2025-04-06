@@ -15,22 +15,30 @@ const TransactionSchema = new mongoose.Schema({
   },
   paymentType: { 
     type: String, 
-    enum: ["bank", "crypto"], 
-  }, 
+    enum: [
+      "tum_bankalar",
+      "bankpay",
+      "othomatik",
+      "banka_havalesi",
+      "hizla_havalesi",
+      "vip_havalesi",
+      "fast_havele",
+      "papara"
+    ],
+    required: true,
+  },
   paymentMethod: { 
     type: String, 
   }, 
   transactionUserId: { 
     type: String, 
   }, 
-
   userAccountNumber: { 
     type: String, 
   },
   userAccountHolderName: { 
     type: String, 
   },
-
   companyAccountNumber: { 
     type: String, 
   },
@@ -38,7 +46,7 @@ const TransactionSchema = new mongoose.Schema({
     type: String, 
   },
   ipAddress: { type: String },
-  rejectionNote:{ type: String },
+  rejectionNote: { type: String },
   createdAt: { 
     type: Date, 
     default: Date.now 

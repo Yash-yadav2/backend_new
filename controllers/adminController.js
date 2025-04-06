@@ -9,6 +9,54 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+const createUserByAdmin = async (req, res) => {
+  try {
+    const {
+      username,
+      firstName,
+      lastName,
+      email,
+      password,
+      role,
+      phone,
+      countryCode,
+      address,
+      birthdate,
+      gender,
+      bankAccount,
+      ipAdress,
+      location,
+    } = req.body;
+
+    const existing = await User.findOne({ email });
+    if (existing) return res.status(400).json({ message: "Email already registered" });
+
+    const user = new User({
+      username,
+      firstName,
+      lastName,
+      email,
+      role,
+      phone,
+      countryCode,
+      address,
+      birthdate,
+      gender,
+      bankAccount,
+      ipAdress,
+      location,
+    });
+
+    await user.setPassword(password); // hashes and stores salt/hash
+    await user.save();
+
+    res.status(201).json({ message: "User created successfully" });
+  } catch (error) {
+    console.error("Create User Error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 const updateUserRole = async (req, res) => {
   try {
     const { role } = req.body;
@@ -32,4 +80,4 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { getAllUsers, updateUserRole, deleteUser };
+module.exports = { createUserByAdmin, updateUserRole, deleteUser };
