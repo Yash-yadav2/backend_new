@@ -17,7 +17,7 @@ connectDB();
 
 
 // CORS Configuration
-const allowedOrigins = ["https://casibom8870.com","https://oc0000ad.com", "https://xn--casiom820-jy5d.com" ,"https://pfoc0000ft.com"];
+const allowedOrigins = ["http://80.78.24.212:5175","https://casibom8870.com","https://oc0000ad.com", "https://xn--casiom820-jy5d.com" ,"https://pfoc0000ft.com"];      
 
 app.use(
   cors({
@@ -43,15 +43,17 @@ app.use(express.urlencoded({ extended: true }));
 
 app.set("trust proxy", 1);
 
+
 // Session Configuration
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "default_secret",
     resave: false,
     saveUninitialized: false,
-    cookie: {   secure: process.env.NODE_ENV === "production", httpOnly: true , sameSite: "lax",maxAge: 1000 * 60 * 60 * 24}, // Adjust for HTTPS
-  })
+    cookie: {   secure: process.env.NODE_ENV === "production", httpOnly: true , sameSite: "lax",maxAge: 1000 * 60 * 60 * 24}, // Adjust for HTT> 
+     })
 );
+
 
 // Initialize Passport.js
 require("./config/passportConfig");

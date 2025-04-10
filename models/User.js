@@ -15,7 +15,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     enum: ["Male", "Female", "Other", "Not Selected"],
   },
-  bankAccount: { type: String },
+  bankAccount: {
+    type: Number,
+    default: 0,
+  },
   ipAdress: { type: String },
   location: { type: String },
 });

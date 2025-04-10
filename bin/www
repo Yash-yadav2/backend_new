@@ -18,8 +18,8 @@ app.set("port", port);
  * Load SSL Certificates
  */
 const options = {
- key: fs.readFileSync('/etc/letsencrypt/live/xn--casiom820-jy5d.com/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/xn--casiom820-jy5d.com/fullchain.pem')
+  key: fs.readFileSync("/etc/letsencrypt/live/xn--casiom820-jy5d.com/privkey.pem"),  // Replace with actual private key path
+  cert: fs.readFileSync("/etc/letsencrypt/live/xn--casiom820-jy5d.com/fullchain.pem"), // Replace with actual certificate path
 };
 
 /**
@@ -28,8 +28,6 @@ const options = {
 var server = https.createServer(options, app);
 
 /**
- * Listen on provided port, on all network interfaces.
- * /**
  * Listen on provided port, on all network interfaces.
  */
 server.listen(port);
@@ -59,21 +57,21 @@ function onError(error) {
       console.error(bind + " requires elevated privileges");
       process.exit(1);
       break;
-case "EADDRINUSE":
-        console.error(bind + " is already in use");
-        process.exit(1);
-        break;
-      default:
-        throw error;
-    }
+    case "EADDRINUSE":
+      console.error(bind + " is already in use");
+      process.exit(1);
+      break;
+    default:
+      throw error;
   }
-  
-  /**
-   * Event listener for HTTPS server "listening" event.
-   */
-  function onListening() {
-    var addr = server.address();
-    var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
-    debug("Listening on " + bind);
-    console.log("✅ Secure HTTPS Server running on " + bind);
-  }
+}
+
+/**
+ * Event listener for HTTPS server "listening" event.
+ */
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+  debug("Listening on " + bind);
+  console.log("✅ Secure HTTPS Server running on " + bind);
+}
