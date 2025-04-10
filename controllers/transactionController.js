@@ -13,6 +13,7 @@ const createTransaction = async (req, res) => {
 
     // Extract transaction details from request body
     const {
+      user,
       amount,
       paymentType,
       paymentMethod,
@@ -41,7 +42,7 @@ const createTransaction = async (req, res) => {
 
     // Create new transaction
     const newTransaction = new Transaction({
-      user: req.user,
+      user,
       amount,
       paymentType,
       paymentMethod,
