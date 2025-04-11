@@ -18,7 +18,8 @@ connectDB();
 
 // CORS Configuration
 
-const allowedOrigins = ["https://casibom8870.com","https://oc0000ad.com", "https://xn--casiom820-jy5d.com" ,"https://pfoc0000ft.com"];
+// const allowedOrigins = ["https://casibom8870.com","https://oc0000ad.com", "https://xn--casiom820-jy5d.com" ,"https://pfoc0000ft.com"];
+const allowedOrigins = ["http://localhost:5173", "http://localhost:5174"];
 
 
 app.use(

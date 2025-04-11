@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { isAuthenticated } = require("../middleware/authMiddleware");
-const { isAdmin } = require("../middleware/adminMiddleware");
+const { isAuthenticated, isAdmin, isAdminOrFinance} = require("../middleware/authMiddleware");
 const Transaction = require("../models/Transaction");
 
 const {
@@ -12,23 +11,15 @@ const {
 } = require("../controllers/transactionController");
 
 // 🔹 **User Transactions**
-router.post("/create", isAuthenticated, createTransaction);
-router.get("/user", getUserTransactions);
+router.post("/create", createTransaction);
+router.get("/user", isAuthenticated, getUserTransactions);
 
 
 // 🔹 **Admin Routes**
-router.get("/all",isAdmin, async (req, res) => {
-    try {
-        // Removed .populate("user")
-        const transactions = await Transaction.find().sort({ createdAt: -1 });
-        res.json(transactions);
-      } catch (error) {
-        res.status(500).json({ message: "Failed to fetch transactions", error: error.message });
-      }
-  });
+router.get("/all", isAuthenticated, isAdminOrFinance, getAllTransactions);
 
 
-  router.put("/update/:id", isAdmin, async (req, res) => {  // <-- async keyword added
+  router.put("/update/:id", isAuthenticated, isAdminOrFinance, async (req, res) => {  // <-- async keyword added
     try {
         console.log("Backend aa gya", req.params);
         console.log("req.params.id:", req.params.id);

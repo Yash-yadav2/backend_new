@@ -5,14 +5,15 @@ const createTransaction = async (req, res) => {
   try {
     console.log("🔹 Incoming Transaction Data:", req.body);
 
-    // Ensure user is authenticated
-    if (!req.user) {
-      console.log("❌ Unauthorized Request - No User Found backend");
-      return res.status(401).json({ message: "Unauthorized. Please log in from bankend." });
-    }
+    // // Ensure user is authenticated
+    // if (!req.user) {
+    //   console.log("❌ Unauthorized Request - No User Found backend");
+    //   return res.status(401).json({ message: "Unauthorized. Please log in from bankend." });
+    // }
 
     // Extract transaction details from request body
     const {
+      user,
       amount,
       paymentType,
       paymentMethod,
@@ -41,7 +42,7 @@ const createTransaction = async (req, res) => {
 
     // Create new transaction
     const newTransaction = new Transaction({
-      user: req.user,
+      user,
       amount,
       paymentType,
       paymentMethod,

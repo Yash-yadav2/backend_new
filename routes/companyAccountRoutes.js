@@ -1,22 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const CompanyAccount = require("../models/CompanyAccount");
+const { isAuthenticated, isAdminOrFinance } = require("../middleware/authMiddleware");
+const { createCompanyAccount, updateCompanyAccount, deleteCompanyAccount, getAllCompanyAccounts } = require("../controllers/companyAccountController");
 
-const { createCompanyAccount, updateCompanyAccount, deleteCompanyAccount,getAllCompanyAccounts } = require("../controllers/companyAccountController");
+router.post("/createaccount", isAuthenticated, isAdminOrFinance, createCompanyAccount);
 
-router.post("/createaccount", createCompanyAccount);
+router.put("/:id", isAuthenticated, isAdminOrFinance, updateCompanyAccount);
 
-router.put("/:id", updateCompanyAccount);
+router.delete("/:id", isAuthenticated, isAdminOrFinance, deleteCompanyAccount);
 
-router.delete("/:id", deleteCompanyAccount);
-
-router.get("/allcompany", async (req, res) => {
-    try {
-      const accounts = await CompanyAccount.find().sort({ updatedAt: -1 });
-      res.json(accounts);
-    } catch (error) {
-      res.status(500).json({ message: "Failed to fetch company accounts", error: error.message });
-    }
-  });
+router.get("/allcompany",  isAuthenticated, isAdminOrFinance, getAllCompanyAccounts);
 
 module.exports = router;

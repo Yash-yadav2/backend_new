@@ -1,5 +1,13 @@
+const jwt = require("jsonwebtoken");
 const User = require("../models/User");
-const passport = require("passport");
+require("dotenv").config();
+
+
+const generateToken = (userId) => {
+  return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
+    expiresIn: "1d",
+  });
+};
 
 const registerUser = async (req, res) => {
   try {
@@ -10,52 +18,58 @@ const registerUser = async (req, res) => {
       password,
       phone,
       countryCode,
-      role,
       address,
       birthdate,
       gender,
+      role,
     } = req.body;
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
+    const userExists = await User.findOne({ email });
+    if (userExists)
       return res.status(400).json({ message: "User already exists" });
-    }
 
-    const username = `${firstName.trim()}${lastName.trim()}${Date.now()}`;
+    const username = `${firstName}${lastName}${Date.now()}`;
 
-    const newUser = new User({
+    const user = await User.create({
       username,
       firstName,
       lastName,
       email,
-      role: role || "user",
+      password,
       phone,
       countryCode,
       address,
       birthdate,
       gender,
+      role,
     });
 
-    await User.register(newUser, password); // hashes password
+    const token = generateToken(user._id);
 
-    res.status(201).json({ message: "User registered successfully", user: newUser });
+    res.status(201).json({ message: "Registered Successfully!", token, user });
   } catch (error) {
-    console.error("Registration error:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
-const loginUser = (req, res, next) => {
-  passport.authenticate("local", (err, user, info) => {
-    if (err) return res.status(500).json({ error: err.message });
-    if (!user) return res.status(400).json({ message: info?.message || "Invalid credentials" });
+const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-    req.logIn(user, (loginErr) => {
-      if (loginErr) return res.status(500).json({ error: loginErr.message });
-      req.session.user = user;
-      res.json({ message: "Login successful", user });
-    });
-  })(req, res, next);
+    const user = await User.findOne({ email });
+    if (!user)
+      return res.status(400).json({ message: "Invalid email or password" });
+
+    const isMatch = await user.matchPassword(password);
+    if (!isMatch)
+      return res.status(400).json({ message: "Invalid email or password" });
+
+    const token = generateToken(user._id);
+
+    res.json({ message: "Login successfully!", token, user });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
 };
 
 const logoutUser = (req, res) => {
